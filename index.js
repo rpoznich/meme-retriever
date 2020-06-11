@@ -21,6 +21,10 @@ bot.on('message', msg=>{
                 fetch('https://www.reddit.com/r/' + args[1] + '.json?limit=5').then(function(response) {
                     return response.json();
               }).then(function(json) {
+                if(json.data.children.length == 0){
+                    msg.channel.send('No posts found')
+                    return
+                }
                 for (var i = 0; i < json.data.children.length; i++) {
                     const attachment = new MessageAttachment(json.data.children[i].data.url);
                     msg.channel.send(attachment)
@@ -36,3 +40,10 @@ bot.on('message', msg=>{
 })
 
 bot.login(token)
+
+setTimeout(keepAlive, 10000)
+       
+function keepAlive() {
+    console.log('keep alive');
+    setTimeout(keepAlive,10000)
+}
